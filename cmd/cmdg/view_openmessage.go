@@ -24,7 +24,7 @@ import (
 const (
 	tsLayout = "2006-01-02 15:04:05"
 
-	openMessageViewHelp = `?, F1     — Help
+	emacs_openMessageViewHelp = `?, F1     — Help
 ^R             — Reload
 l              — Add label
 L              — Remove label
@@ -50,6 +50,33 @@ H              — Force HTML view
 
 Press [enter] to exit
 `
+	openMessageViewHelp = `?, F1     — Help
+^R             — Reload
+l              — Add label
+L              — Remove label
+*              — Toggle "starred"
+u              — Exit message
+U              — Mark unread
+j, Down        — Scroll down
+space          — Page down
+backspace      — Page up
+k, Up          — Scroll up
+^P             — Previous message
+^N             — Next message
+f              — Forward message
+r              — Reply
+/, ^s          — Search within message
+a              — Reply all
+d              — Delete
+e              — Archive
+t              — Browse attachments (if any)
+H              — Force HTML view
+\              — Show raw message source
+|              — Pipe to command
+
+Press [enter] to exit
+`
+
 )
 
 var (
@@ -582,14 +609,14 @@ func (ov *OpenMessageView) Run(ctx context.Context) (*MessageViewOp, error) {
 			case input.Home, input.XHome:
 				scroll = 0
 				ov.Draw(lines, scroll)
-			case "n", input.Down:
+			case "j", input.Down:
 				ov.screen.UseCache()
 				scroll = ov.scroll(ctx, len(lines), scroll, 1)
 				ov.Draw(lines, scroll)
 			case " ", input.CtrlV, input.PgDown:
 				scroll = ov.scroll(ctx, len(lines), scroll, ov.screen.Height-10)
 				ov.Draw(lines, scroll)
-			case "p", input.Up:
+			case "k", input.Up:
 				ov.screen.UseCache()
 				scroll = ov.scroll(ctx, len(lines), scroll, -1)
 				ov.Draw(lines, scroll)
@@ -626,7 +653,7 @@ func (ov *OpenMessageView) Run(ctx context.Context) (*MessageViewOp, error) {
 				} else {
 					return OpRemoveCurrent(nil), nil
 				}
-			case "s", input.CtrlS: // Search
+			case "/", input.CtrlS: // Search
 				ns, err := ov.incrementalSearch(ctx, lines)
 				if err != nil {
 					return nil, err

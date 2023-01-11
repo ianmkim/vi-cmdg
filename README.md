@@ -1,7 +1,11 @@
-# cmdg - A command line client to GMail
+# vi-cmdg - A (vi-keybound) command line client to GMail
 
+This fork of cmdg contains very basic changes for keybindings.
+To come is an easier way to modify the keybindings. Shouldn't be this hard
+the code is clean enough
+
+Original repository and copyright notice can be found here:
 Copyright Thomas Habets <thomas@habets.se> 2015-2021
-
 https://github.com/ThomasHabets/cmdg
 
 ## License

@@ -22,7 +22,7 @@ import (
 const (
 	scrollLimit = 5
 
-	messageListViewHelp = `?, F1              — Help
+	emacs_messageListViewHelp = `?, F1              — Help
 enter              — Open message
 space, x           — Mark message and advance
 X                  — Mark message and step up
@@ -41,6 +41,30 @@ g                  — Go to label
 1                  — Go to inbox
 U                  … Mark marked mails as unread
 s, ^s              — Search
+q                  — Quit
+^L                 — Refresh screen
+
+Press [enter] to exit
+`
+	messageListViewHelp = `?, F1              — Help
+enter              — Open message
+space, x           — Mark message and advance
+X                  — Mark message and step up
+e                  — Archive marked messages
+d                  — Move marked messages to trash
+I                  … Mark marked mails as read
+l                  — Label marked messages
+L                  — Unlabel marked messages
+*                  — Toggle starred on highlighted message
+c                  — Compose new message
+C                  — Continue message from draft
+N, n, ^N, j, Down  — Next message
+P, p, ^P, k, Up    — Previous message
+r, ^R              — Reload current view
+g                  — Go to label
+1                  — Go to inbox
+U                  … Mark marked mails as unread
+/, ^s              — Search
 q                  — Quit
 ^L                 — Refresh screen
 
@@ -978,7 +1002,7 @@ func (mv *MessageView) Run(ctx context.Context) error {
 				// TODO: not optimal, since it adds a
 				// stack frame on every navigation.
 				return NewMessageView(ctx, cmdg.Inbox, "", mv.keys).Run(ctx)
-			case "s", input.CtrlS:
+			case "/", input.CtrlS:
 				q, err := dialog.Entry("Query> ", mv.keys)
 				if err == dialog.ErrAborted {
 					// That's fine.
